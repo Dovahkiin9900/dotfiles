@@ -1,0 +1,51 @@
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME=""  # 使用 starship，不用 oh-my-zsh 主题
+
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# PATH
+export PATH="$HOME/.local/bin:$PATH"
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# zoxide (替代 cd)
+eval "$(zoxide init zsh)"
+
+# starship
+eval "$(starship init zsh)"
+
+# thefuck
+eval "$(thefuck --alias)"
+
+# bat 替代 cat
+alias cat="bat --paging=never"
+
+# eza 替代 ls
+alias ls="eza --icons"
+alias ll="eza -lah --icons --git"
+alias lt="eza --tree --icons"
+
+# 常用别名
+alias vim="nvim"
+alias vi="nvim"
+alias lg="lazygit"
+
+# 提示切换 shell（仅首次显示）
+if [ "$SHELL" != "$(which zsh)" ]; then
+  echo ""
+  echo "提示：当前默认 Shell 不是 zsh，请手动执行以下命令切换："
+  echo ""
+  echo "  chsh -s \$(which zsh)"
+  echo ""
+  echo "切换后重新登录生效。"
+fi
