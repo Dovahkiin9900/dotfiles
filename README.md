@@ -2,6 +2,9 @@
 
 ## 新机器一键部署
 
+如果你是vmware，需要先下载vmtools：
+`sudo apt install open-vm-tools-desktop`
+
 ```bash
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/Dovahkiin9900/dotfiles
 ```
