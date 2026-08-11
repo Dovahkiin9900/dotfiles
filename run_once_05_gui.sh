@@ -9,17 +9,6 @@ fi
 
 echo "[5/5] 安装 GUI 工具..."
 
-# --- Kitty 终端 ---
-if ! command -v kitty &>/dev/null; then
-  echo "  → kitty"
-  curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-  mkdir -p "$HOME/.local/bin"
-  ln -sf "$HOME/.local/kitty.app/bin/kitty" "$HOME/.local/bin/kitty"
-  ln -sf "$HOME/.local/kitty.app/bin/kitten" "$HOME/.local/bin/kitten"
-  # 添加桌面图标
-  cp "$HOME/.local/kitty.app/share/applications/kitty.desktop" "$HOME/.local/share/applications/" 2>/dev/null || true
-fi
-
 # --- JetBrainsMono Nerd Font ---
 FONT_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONT_DIR"

@@ -13,7 +13,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/Dovahkii
 4. 安装所有 CLI 工具
 5. 配置 zsh + tmux + nvim
 6. 配置 Git 并生成 SSH key
-7. GUI 机器额外安装 Kitty + JetBrainsMono Nerd Font
+7. GUI 机器额外安装 JetBrainsMono Nerd Font
 
 完成后手动切换默认 shell：
 
@@ -44,5 +44,4 @@ chsh -s $(which zsh)
 | uv | Python 包管理 |
 | thefuck | 命令自动纠错 |
 | nvm + Node LTS | Node 版本管理 |
-| kitty | GPU 加速终端（GUI） |
 | JetBrainsMono NF | Nerd Font（GUI） |
