@@ -1,0 +1,4 @@
+# Repository resources are consumed by scripts, not copied into $HOME.
+README.md
+scripts
+configs

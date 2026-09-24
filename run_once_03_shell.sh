@@ -26,11 +26,10 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
 fi
 
 # --- oh-my-tmux ---
+# Only install the framework. run_after_06_configs.sh.tmpl deploys saved settings.
 if [ ! -d "$HOME/.tmux" ]; then
   echo "  → oh-my-tmux"
   git clone https://github.com/gpakosz/.tmux.git "$HOME/.tmux"
-  ln -sf "$HOME/.tmux/.tmux.conf" "$HOME/.tmux.conf"
-  cp "$HOME/.tmux/.tmux.conf.local" "$HOME/.tmux.conf.local"
 fi
 
 # --- nvm + Node LTS ---
@@ -61,11 +60,7 @@ if ! command -v thefuck &>/dev/null; then
   "$HOME/.local/bin/uv" tool install thefuck
 fi
 
-# --- lazyvim ---
-if [ ! -d "$HOME/.config/nvim" ]; then
-  echo "  → lazyvim"
-  git clone https://github.com/LazyVim/starter "$HOME/.config/nvim"
-  rm -rf "$HOME/.config/nvim/.git"
-fi
+# LazyVim is deployed from configs/nvim by run_after_06_configs.sh.tmpl.
+# Do not clone starter here: it would bypass the versioned personal settings.
 
 echo "[3/5] shell 环境配置完成"

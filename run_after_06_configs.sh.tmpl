@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Run on EVERY apply, after tool installation; source changes need no state reset.
+set -euo pipefail
+export HOME={{ .chezmoi.destDir | quote }}
+bash {{ joinPath .chezmoi.sourceDir "scripts/configs.sh" | quote }} deploy
