@@ -18,6 +18,24 @@ chmod +x setup.sh
 3. 安装 Neovim、lazygit、ripgrep、fd、pnpm、zoxide、starship、tmux 和剪贴板工具。
 4. 询问是否生成 SSH key。
 
+## 软件
+
+| 软件 | 简介 | 官方链接 |
+|---|---|---|
+| [Neovim](https://neovim.io/) | 可扩展的终端编辑器 | [neovim.io](https://neovim.io/) |
+| [lazygit](https://github.com/jesseduffield/lazygit) | Git 终端界面 | [GitHub](https://github.com/jesseduffield/lazygit) |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) | 快速全文搜索工具 | [GitHub](https://github.com/BurntSushi/ripgrep) |
+| [fd](https://github.com/sharkdp/fd) | 更易用的文件查找工具 | [GitHub](https://github.com/sharkdp/fd) |
+| [pnpm](https://pnpm.io/) | Node.js 包管理器 | [pnpm.io](https://pnpm.io/) |
+| [zoxide](https://github.com/ajeetdsouza/zoxide) | 更智能的目录跳转工具 | [GitHub](https://github.com/ajeetdsouza/zoxide) |
+| [starship](https://starship.rs/) | 跨 Shell 的命令提示符 | [starship.rs](https://starship.rs/) |
+| [tmux](https://github.com/tmux/tmux) | 终端复用器 | [GitHub](https://github.com/tmux/tmux) |
+| [xclip](https://github.com/astrand/xclip) | X11 剪贴板命令行工具 | [GitHub](https://github.com/astrand/xclip) |
+| [wl-clipboard](https://github.com/bugaevc/wl-clipboard) | Wayland 剪贴板命令行工具 | [GitHub](https://github.com/bugaevc/wl-clipboard) |
+| [Node.js](https://nodejs.org/) | JavaScript 运行环境，pnpm 需要它 | [nodejs.org](https://nodejs.org/) |
+| [npm](https://www.npmjs.com/) | Node.js 默认包管理器 | [npmjs.com](https://www.npmjs.com/) |
+| [百度输入法](https://srf.baidu.com/) | 中文输入法，需手动安装 | [官网](https://srf.baidu.com/) |
+
 SSH key 可以直接通过参数选择：
 
 ```bash
