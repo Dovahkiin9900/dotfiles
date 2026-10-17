@@ -14,8 +14,8 @@ chmod +x setup.sh
 脚本会：
 
 1. 根据 Ubuntu 版本和版本代号配置中科大软件源。
-2. 备份原 APT 源并执行 `apt-get update`。
-3. 安装 Neovim、lazygit、ripgrep、fd、pnpm、zoxide、starship、tmux、剪贴板工具和百度输入法 Linux 版。
+2. 直接写入对应格式的中科大源并执行 `apt-get update`。
+3. 安装 Neovim、lazygit、ripgrep、fd、pnpm、zoxide、starship、tmux 和剪贴板工具。
 4. 询问是否生成 SSH key。
 
 SSH key 可以直接通过参数选择：
@@ -38,13 +38,7 @@ SSH key 可以直接通过参数选择：
 
 ## 百度输入法
 
-脚本使用百度输入法 Linux 官方 deb 地址安装 amd64 版本。如果官方地址发生变化，可以在执行时传入新地址：
-
-```bash
-BAIDU_INPUT_URL='https://example.com/baidupinyin.deb' ./setup.sh
-```
-
-安装完成后重新登录桌面，在系统输入法设置中选择 Fcitx，并添加百度输入法。
+手动安装步骤见 [`install.md`](install.md)。
 
 ## 手动加入 tmux 配置
 
@@ -114,12 +108,8 @@ vim.opt.clipboard = "unnamedplus"
 ~/.ssh/id_ed25519.pub
 ```
 
-## APT 源备份
-
-每次修改 APT 源前，脚本会备份到：
-
-```text
-/etc/apt/ustc-backup-时间戳/
-```
+## APT 源
 
 Ubuntu 24.04 及更新版本使用 deb822 格式的 `ubuntu.sources`；旧版本使用传统的 `sources.list` 格式。
+
+脚本不会备份 APT 源。它会清理旧版本脚本留下的 `*.disabled-by-dotfiles` 文件，避免 APT 报无效扩展名警告。
