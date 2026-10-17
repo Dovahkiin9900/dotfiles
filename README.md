@@ -1,88 +1,125 @@
-# dotfiles
+# Ubuntu 开发环境安装
 
-用 chezmoi 部署个人 Linux 开发环境，并同步 tmux、LazyVim 配置。
+这个仓库只提供一次性的 Ubuntu 环境安装脚本，不接管用户的 Shell、tmux 或 Neovim 配置。
 
-## 新机器部署
+## 使用方式
 
-需要 x86_64 Ubuntu/Debian、curl、sudo 和网络。部署会更换 APT 源、配置 Git/SSH、安装工具，
-并备份后覆盖本地 tmux、Neovim 配置。Git 身份写在 `run_once_04_git_ssh.sh`，使用前按需修改。
-
-VMware 用户先安装：`sudo apt install open-vm-tools-desktop`。
+在 Ubuntu 上执行：
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/Dovahkiin9900/dotfiles
+chmod +x setup.sh
+./setup.sh
 ```
 
-部署会自动安装 tmux 与 Ubuntu 剪切板工具（`wl-clipboard`、`xclip`），启用 tmux 到系统剪切板的复制功能，并部署 tmux 配置。已有 tmux 会话会自动重新加载配置；没有运行中的会话时，新启动的 tmux 会直接使用新配置。完成部署后，在 tmux 复制模式中选择文本并确认，即可在 Ubuntu 桌面粘贴。
+脚本会：
 
-按提示将 SSH 公钥添加到 GitHub。部署完成后切换默认 Shell，再重新登录：
+1. 根据 Ubuntu 版本和版本代号配置中科大软件源。
+2. 备份原 APT 源并执行 `apt-get update`。
+3. 安装 Neovim、lazygit、ripgrep、fd、pnpm、zoxide、starship、tmux、剪贴板工具和百度输入法 Linux 版。
+4. 询问是否生成 SSH key。
+
+SSH key 可以直接通过参数选择：
 
 ```bash
-chsh -s "$(which zsh)"
+./setup.sh --ssh       # 生成 ~/.ssh/id_ed25519；已有则跳过
+./setup.sh --no-ssh    # 跳过 SSH key
 ```
 
-主要工具：
-- Shell：zsh、oh-my-zsh、自动建议与语法高亮、starship。
-- 终端与编辑器：tmux / oh-my-tmux、Neovim / LazyVim、lazygit。
-- 命令行：rg、fd、bat、eza、fzf、zoxide、tldr、thefuck。
-- 开发环境：uv、nvm / Node LTS；桌面环境额外安装 JetBrainsMono Nerd Font。
+非交互执行时默认跳过 SSH key，需要生成时使用 `--ssh`。
 
-## 同步与应用配置
+脚本不会修改：
 
-以下命令在仓库根目录执行，需要 Bash、GNU coreutils 和 rsync（缺少时运行 `sudo apt install rsync`）。
+- `~/.zshrc`
+- `~/.bashrc`
+- `~/.tmux.conf`
+- `~/.tmux.conf.local`
+- `~/.config/nvim/`
+- 已有 SSH 私钥
 
-| 本地配置（固定路径） | 仓库副本 |
-|---|---|
-| `~/.tmux.conf.local` | `configs/tmux.conf.local` |
-| `~/.config/nvim/` | `configs/nvim/` |
+## 百度输入法
 
-**按修改位置选择命令：**
-
-| 操作 | 命令 |
-|---|---|
-| 修改本地后，保存到仓库 | `./scripts/configs.sh sync` |
-| 修改仓库副本后，应用到本地 | `./scripts/configs.sh deploy` |
-
-`sync` 同步新增、修改和删除，保留插件锁文件，排除 Git 元数据、日志和缓存。
-检查内容后自行提交推送，新机器才能从 GitHub 获取这些修改：
+脚本使用百度输入法 Linux 官方 deb 地址安装 amd64 版本。如果官方地址发生变化，可以在执行时传入新地址：
 
 ```bash
-git add configs
-git diff --cached -- configs  # 确认修改正确，且不含密钥等私密信息
-git commit -m "Update tmux and LazyVim config"
-git push
+BAIDU_INPUT_URL='https://example.com/baidupinyin.deb' ./setup.sh
 ```
 
-### 覆盖与备份
+安装完成后重新登录桌面，在系统输入法设置中选择 Fcitx，并添加百度输入法。
 
-`deploy` 只更新配置，要求已安装 oh-my-tmux（`~/.tmux/.tmux.conf` 存在）。
-它会重建 `~/.tmux.conf` 框架链接，覆盖 `~/.tmux.conf.local`，并**整体替换 Neovim 配置目录，包括删除本地独有文件**。
+## 手动加入 tmux 配置
 
-每次部署的旧配置单独保存在 `~/.local/state/dotfiles/backups/` 下，命令会显示本次备份路径。
-备份包含原有的 `tmux.conf`、`tmux.conf.local`、`nvim`。恢复时放回原位置；恢复 nvim 前先移走当前目录，避免合并残留。
+配置片段位于 [`manual/tmux.conf`](manual/tmux.conf)。
 
-使用本仓库执行 `chezmoi apply` / `update` 也会触发覆盖。对当前仓库执行完整部署用
-`chezmoi --source "$PWD" apply`；默认 source 目录可能是另一份仓库。
-`chezmoi diff` 不展示这两套配置的内容差异。
+把它的内容加入以下任意一个文件：
 
-## 修改位置
+```text
+~/.tmux.conf
+```
 
-- tmux：修改 `configs/tmux.conf.local` 或 `~/.tmux.conf.local`，应用后执行 `tmux source-file ~/.tmux.conf`。
-- LazyVim：在 `configs/nvim/` 或本地 nvim 目录中修改以下文件，应用后重启 Neovim。
+或者使用 Oh My Tmux 时加入：
 
-| LazyVim 文件 | 用途 |
-|---|---|
-| `lua/config/options.lua` | 行号、缩进等编辑器选项 |
-| `lua/config/keymaps.lua` | 快捷键 |
-| `lua/config/autocmds.lua` | 自动命令 |
-| `lua/plugins/*.lua` | 插件及其设置；`example.lua` 当前不生效，自定义配置另建文件 |
-| `lazyvim.json` | extras 等设置，可用 `:LazyExtras` 管理 |
-| `lazy-lock.json` | 插件版本锁定，可用 `:Lazy restore` 恢复 |
+```text
+~/.tmux.conf.local
+```
 
-新机器首次启动 Neovim 需要联网安装插件。
+它包含：
 
-## 项目入口
+- `set -g mouse on`：启用鼠标。
+- `set -g set-clipboard on`：启用 tmux 与终端的剪贴板同步。
+- 复制模式中按 `y`：使用 Wayland 的 `wl-copy` 或 X11 的 `xclip` 写入系统剪贴板。
 
-- `dot_zshrc`：由 chezmoi 管理的 `~/.zshrc`。
-- `run_once_*.sh`：工具与环境安装。
-- `run_after_06_configs.sh.tmpl`：每次 apply 后调用 `scripts/configs.sh deploy`。
+加入后重新加载：
+
+```bash
+tmux source-file ~/.tmux.conf
+```
+
+如果使用 `~/.tmux.conf.local`，仍然执行上面的命令即可。
+
+## 手动加入 Neovim 配置
+
+配置片段位于 [`manual/nvim-options.lua`](manual/nvim-options.lua)。
+
+把其中两行加入：
+
+```text
+~/.config/nvim/lua/config/options.lua
+```
+
+如果使用 LazyVim，目标文件通常就是这个文件；文件不存在时创建它。
+
+加入内容：
+
+```lua
+vim.opt.mouse = "a"
+vim.opt.clipboard = "unnamedplus"
+```
+
+作用是：
+
+- `vim.opt.mouse = "a"`：在 Neovim 中启用鼠标。
+- `vim.opt.clipboard = "unnamedplus"`：让 Neovim 使用系统剪贴板。
+
+## SSH key
+
+使用 `--ssh` 后，脚本只在下面的私钥不存在时生成：
+
+```text
+~/.ssh/id_ed25519
+```
+
+已有私钥不会被覆盖。生成后把下面文件的内容添加到 GitHub 或其他 Git 服务：
+
+```text
+~/.ssh/id_ed25519.pub
+```
+
+## APT 源备份
+
+每次修改 APT 源前，脚本会备份到：
+
+```text
+/etc/apt/ustc-backup-时间戳/
+```
+
+Ubuntu 24.04 及更新版本使用 deb822 格式的 `ubuntu.sources`；旧版本使用传统的 `sources.list` 格式。

@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-# Run on EVERY apply, after tool installation; source changes need no state reset.
-set -euo pipefail
-export HOME={{ .chezmoi.destDir | quote }}
-bash {{ joinPath .chezmoi.sourceDir "scripts/configs.sh" | quote }} deploy
-
-if tmux has-session 2>/dev/null; then
-  tmux source-file "$HOME/.tmux.conf"
-fi
