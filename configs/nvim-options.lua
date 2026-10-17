@@ -2,4 +2,4 @@
 -- 如果文件不存在，就创建它。
 
 vim.opt.mouse = "a"
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = ""
