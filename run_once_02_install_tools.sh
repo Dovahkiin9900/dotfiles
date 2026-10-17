@@ -22,7 +22,8 @@ gh_download() {
 
 echo "[2/5] 安装 apt 基础工具..."
 sudo apt install -y \
-  zsh tmux git curl wget unzip fzf stow rsync build-essential
+  zsh tmux git curl wget unzip fzf stow rsync build-essential \
+  wl-clipboard xclip
 
 echo "[2/5] 安装二进制工具..."
 

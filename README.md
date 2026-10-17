@@ -13,6 +13,8 @@ VMware 用户先安装：`sudo apt install open-vm-tools-desktop`。
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/Dovahkiin9900/dotfiles
 ```
 
+部署会自动安装 tmux 与 Ubuntu 剪切板工具（`wl-clipboard`、`xclip`），启用 tmux 到系统剪切板的复制功能，并部署 tmux 配置。已有 tmux 会话会自动重新加载配置；没有运行中的会话时，新启动的 tmux 会直接使用新配置。完成部署后，在 tmux 复制模式中选择文本并确认，即可在 Ubuntu 桌面粘贴。
+
 按提示将 SSH 公钥添加到 GitHub。部署完成后切换默认 Shell，再重新登录：
 
 ```bash
