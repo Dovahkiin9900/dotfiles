@@ -60,7 +60,7 @@ SSH key 可以直接通过参数选择：
 
 ## 手动加入 tmux 配置
 
-配置片段位于 [`manual/tmux.conf`](manual/tmux.conf)。
+配置片段位于 [`configs/tmux.conf`](configs/tmux.conf)。
 
 把它的内容加入以下任意一个文件：
 
@@ -78,7 +78,9 @@ SSH key 可以直接通过参数选择：
 
 - `set -g mouse on`：启用鼠标。
 - `set -g set-clipboard on`：启用 tmux 与终端的剪贴板同步。
-- 复制模式中按 `y`：使用 Wayland 的 `wl-copy` 或 X11 的 `xclip` 写入系统剪贴板。
+- 鼠标拖选后松开，或在复制模式中按 `y`：使用 Wayland 的 `wl-copy` 或 X11 的 `xclip` 写入系统剪贴板。
+
+把片段放在配置文件末尾，避免后续绑定覆盖它。在本机 Ubuntu 桌面中，拖选后可到其他应用按 `Ctrl+V` 验证。
 
 加入后重新加载：
 
